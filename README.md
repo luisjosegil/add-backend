@@ -6,6 +6,10 @@ This is LJ, and I have just updated the project information.
 I intend to add a docker container, with a minimal installation to run the application, i.e. an ubuntu, JVM and my jar file.
 As soon as I have tested it, I will update this README with the steps to download my container.
 
+We explain at the bottom of the file how to modify or build from scratch the JAR file.
+
+Note: to address this challenge, I have used my own docker container based on ubuntu minimal image. I added SSH, Oracle JVM, JavaDB and VIM as text editor.
+
 Cheers!
 
 ----------------------
@@ -28,6 +32,8 @@ NUE-AMS-67
 FRA-AMS-17
 FRA-LHR-27
 LHR-NUE-23
+
+This information is already stored in data/data.txt.
 
 The application will first store data into a local database. In case there are no format errors, a menu will be presented to the user, as follows:
 Options available for search
@@ -212,3 +218,39 @@ Class Hierarchy:
 
 
 The jar file includes JAVADOC documentation for the project.
+
+
+---------------------
+Modifying the project
+---------------------
+
+There are a few things which are included in the JAR file, but are not part of the GITHUB project.
+First: JavaDB libraries.
+In case you want to use the code, you should install JavaDB in your environment. I suggest to follow the steps described in here: http://docs.oracle.com/javadb/10.8.3.0/getstart/index.html.
+
+Create a new jar:
+I have followed these steps.
+cd source
+javac FlightsSearch.java
+mv *.class ../
+javadoc -d ../javadoc FlightsSearch.java
+
+In order to embed JavaDB drivers into the project, I have decided to expand derby.jar in the project root directory.
+jar xvf derby.jar .
+
+And we can now re-create our jar file
+jar cf flights.jar *.class META-INF data javadoc org
+
+Let's add an entry point
+We create a config file called manifest1, and we write there the following config parameter:
+Main-Class: FlightsSearch
+
+Once done, we modify JAR MANIFEST file:
+jar ufm flights.jar manifest1
+
+And that's all!. We can now test our new jar!
+java -jar flights.jar
+
+
+
+
