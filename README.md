@@ -88,85 +88,7 @@ Use of DDBB and standard SQL for data management, mainly for scalability and per
 
 Error management via exceptions. We have defined a hierarchy of two exceptions, FunctionalException and TechnicalException. A more detailed design should consider a more detailed hierarchy of exceptions.
 
-
 CLASSES:
-Data_Class. Data objects which store data sets coming from file, and being stored into DDBB.
-DDBB_Data. Data objects which store data sets coming from DDBB
-
-FileToDDBB. Class to store file into DDBB.
-
-DDBB_Queries. Class with SQL abstraction.
-DAO. Database Access abstraction.
-
-Cli_Interface. Class to manage User Interface.
-
-FlightsSearch. Main class.
-
-Class Hierarchy:
-
-                 -------------
-                |FlightsSearch|
-                 -------------
-                        |                --------------
-                        |               | DDBB_Queries |
-                        |                --------------
-                        |                       ^
-                        |                       |
-                        |                       has
-                        |                       |
-                        |                       |
-                        |                -------------
-                         - has a -----> |      DAO    |<--------
-                        |                -------------          |
-                        |                       ^               |
-                        |                       |               |
-                        |                       has             |
-                        |                       |               |
-                        |                       |               |
-                        |                --------------         |
-                         - has a -----> | Cli_Interface|        |
-                        |                --------------         |
-                        |                                       |
-                        |                                       |
-                        |                                       |
-                        |                                       |
-                        |                                       |
-                        |                -------------          |
-                         - has a -----> |   FileToDDBB |--------
-                                         -------------
-
-
-The jar file includes JAVADOC documentation for the project.
-
-
-DDBB:
-There are two classes for database management, DDBB_Queries, where every SQL is managed, and DAO, a Data Access Object that is the abstraction of the database model and access.
-
-The database model is based on a table for point-to-point trips, and a hierarchy of up to four levels trips over it, each level base on the previous one plus the combination with the base options. This hierarchy is made up with SQL VIEWS, in order to avoid having to use physical space for consecutive iterations.
-
- ------       ---------       ----------       ----------       ----------
-| MAIN | --- | 1 SCALE | --- | 2 SCALES | --- | 3 SCALES | --- | 4 SCALES |
- ------       ---------       ----------       ----------       ----------
-   |              |               |                 |                |
-   |--------------                |                 |                |
-   |------------------------------                  |                |
-   |------------------------------------------------                 |
-    -----------------------------------------------------------------
-
-In this way, the complexity of flights combinations and conditions is managed by a series of simple SQL sentences, and the results are agregated/evaluated by the code.
-The example manages a few trips, but the architecture could manage hundreds of thousands of combinations without major issues.
-
-A suggestion would be to create dynamically-based view depth instead of statically as it is done now.
-Another improvement would be to replace JavaDB with any other relational database.
-It would be necessary to modify database connections, and review SQL exceptions management, in case the behaviour of the database is different than javaDB.
-
-Exceptions:
-Management of exceptions to control errors. The errors have been clasiffied as functional and technical errors.
-A functional error is linked to the use of the application. For example, improper data filled by the user will throw a functional exception.
-A technical error comprises the rest of the errors than may appear.
-For example, a non accessible database.
-
-Classes:
 
 FunctionalException. Our Exception for errors of functionality.
 TechnicalException. Our exception for technical errors.
@@ -217,8 +139,37 @@ Class Hierarchy:
                                          -------------
 
 
-The jar file includes JAVADOC documentation for the project.
 
+ -------------------------------------------------------------
+|The jar file includes JAVADOC documentation for the project  |
+ -------------------------------------------------------------
+
+DDBB:
+There are two classes for database management, DDBB_Queries, where every SQL is managed, and DAO, a Data Access Object that is the abstraction of the database model and access.
+
+The database model is based on a table for point-to-point trips, and a hierarchy of up to four levels trips over it, each level base on the previous one plus the combination with the base options. This hierarchy is made up with SQL VIEWS, in order to avoid having to use physical space for consecutive iterations.
+
+ ------       ---------       ----------       ----------       ----------
+| MAIN | --- | 1 SCALE | --- | 2 SCALES | --- | 3 SCALES | --- | 4 SCALES |
+ ------       ---------       ----------       ----------       ----------
+   |              |               |                 |                |
+   |--------------                |                 |                |
+   |------------------------------                  |                |
+   |------------------------------------------------                 |
+    -----------------------------------------------------------------
+
+In this way, the complexity of flights combinations and conditions is managed by a series of simple SQL sentences, and the results are agregated/evaluated by the code.
+The example manages a few trips, but the architecture could manage hundreds of thousands of combinations without major issues.
+
+A suggestion would be to create dynamically-based view depth instead of statically as it is done now.
+Another improvement would be to replace JavaDB with any other relational database.
+It would be necessary to modify database connections, and review SQL exceptions management, in case the behaviour of the database is different than javaDB.
+
+Exceptions:
+Management of exceptions to control errors. The errors have been clasiffied as functional and technical errors.
+A functional error is linked to the use of the application. For example, improper data filled by the user will throw a functional exception.
+A technical error comprises the rest of the errors than may appear.
+For example, a non accessible database.
 
 ---------------------
 Modifying the project
