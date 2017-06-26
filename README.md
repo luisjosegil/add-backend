@@ -139,11 +139,6 @@ Class Hierarchy:
                                          -------------
 
 
-
- -------------------------------------------------------------
-|The jar file includes JAVADOC documentation for the project  |
- -------------------------------------------------------------
-
 DDBB:
 There are two classes for database management, DDBB_Queries, where every SQL is managed, and DAO, a Data Access Object that is the abstraction of the database model and access.
 
@@ -161,15 +156,29 @@ The database model is based on a table for point-to-point trips, and a hierarchy
 In this way, the complexity of flights combinations and conditions is managed by a series of simple SQL sentences, and the results are agregated/evaluated by the code.
 The example manages a few trips, but the architecture could manage hundreds of thousands of combinations without major issues.
 
-A suggestion would be to create dynamically-based view depth instead of statically as it is done now.
-Another improvement would be to replace JavaDB with any other relational database.
-It would be necessary to modify database connections, and review SQL exceptions management, in case the behaviour of the database is different than javaDB.
-
 Exceptions:
 Management of exceptions to control errors. The errors have been clasiffied as functional and technical errors.
 A functional error is linked to the use of the application. For example, improper data filled by the user will throw a functional exception.
 A technical error comprises the rest of the errors than may appear.
 For example, a non accessible database.
+
+----------------------
+Potential improvements
+----------------------
+
+As this is just a POC, I see many opportunities of improvement, obviously.
+
+A suggestion would be to create dynamically-based view depth instead of statically as it is done now.
+Another improvement would be to replace JavaDB with any other relational database.
+It would be necessary to modify database connections, and review SQL exceptions management, in case the behaviour of the database is different than javaDB.
+
+Exceptions management have a lot o margin of improvement.
+
+-------------------
+Extra documentation
+-------------------
+ 
+The jar file includes JAVADOC documentation for the project
 
 ---------------------
 Modifying the project
